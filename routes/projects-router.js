@@ -4,6 +4,7 @@ const router = express.Router();
 // const knex = require('../data/db-config');
 const Projects = require('../models/projects-models');
 
+// GET: all projects
 router.get('/', (req, res) => {
   Projects.get()
     .then(projects => {
@@ -17,6 +18,19 @@ router.get('/', (req, res) => {
     }));
 });
 
+// GET: Single Project
+router.get('/:id', (req, res) => {
+  Projects.get(req.params.id)
+  .then(project => res.json({ ...project, completed: project.completed === 0 ? false : true }))
+  .catch(err = res.status(500).json({ error: 'Failed to retrieve project' }))
+})
+
+// GET: All tasks for project
+router.get('/:id/tasks', (req, res) => {
+  
+})
+
+// Post new project
 router.post('/', (req, res) => {
   knex
     .insert(req.body, 'id')
