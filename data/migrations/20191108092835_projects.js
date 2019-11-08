@@ -6,18 +6,39 @@ exports.up = function(knex) {
       // tbl.integer('id').unique();
       tbl.string('name').notNullable();
       tbl.string('description');
-      tbl.boolean('completed', false);
+      tbl.boolean('completed');
     }),
     knex.schema.createTable('resources', tbl => {
-      // tbl.integer('id').unique();
+      tbl.increments();
       tbl.string('name').unique().notNullable();
       tbl.string('description');
+      tbl.integer('project_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('projects')
+        .onDelete('RESTRICT')
+        .onUpdate('CASCADE')
+      tbl.integer('resource_id')
+        .unsigned()
+        .notNullable()
+        .references('id')
+        .inTable('resources')
+        .onDelete('RESTRICT')
+        .onUpdate('CASCADE')
     }),
     knex.schema.createTable('tasks', tbl => {
-      // tbl.integer('id').unique();
+      tbl.increments();
       tbl.string('description').notNullable();
       tbl.string('notes');
-      tbl.boolean('completed', false);
+      tbl.boolean('completed');
+      tbl.integer('project_id')
+      .unsigned()
+      .notNullable()
+      .references('id')
+      .inTable('projects')
+      .onDelete('RESTRICT')
+      .onUpdate('CASCADE')
     })
   ])
 };
