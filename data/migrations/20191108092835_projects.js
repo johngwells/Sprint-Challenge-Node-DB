@@ -6,7 +6,7 @@ exports.up = function(knex) {
       // tbl.integer('id').unique();
       tbl.string('name').notNullable();
       tbl.string('description');
-      tbl.boolean('boolean', false);
+      tbl.boolean('completed', false);
     }),
     knex.schema.createTable('resources', tbl => {
       // tbl.integer('id').unique();
@@ -17,7 +17,7 @@ exports.up = function(knex) {
       // tbl.integer('id').unique();
       tbl.string('description').notNullable();
       tbl.string('notes');
-      tbl.boolean('boolean', false);
+      tbl.boolean('completed', false);
     })
   ])
 };
