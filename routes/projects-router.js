@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// const knex = require('../data/db-config');
+const knex = require('../data/db-config');
 const Projects = require('../models/projects-models');
 
 // GET: all projects
