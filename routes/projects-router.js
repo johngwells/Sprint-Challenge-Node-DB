@@ -27,17 +27,33 @@ router.get('/:id', (req, res) => {
 
 // GET: All tasks for project
 router.get('/:id/tasks', (req, res) => {
-  
+  Projects.getTasks(req.params.id)
+  .then(tasks => {
+    let taskList = tasks.map(task => {
+      return { ...task, completed: task.completed === 0 ? false : true }
+    })
+    res.json(taskList);
+  })
+  .catch(err => res.status(500).json({ error: 'Failed to get all tasks' }))
 })
 
-// Post new project
+// POST: new project
 router.post('/', (req, res) => {
-  knex
-    .insert(req.body, 'id')
-    .into('projects')
-    .then(id => res.status(200).json(id))
+  const newProject = req.body;
+  Projects.add({
+    ...req.body,
+    completed: !newProject.completed && false || newProject.completed
+  })
+    .then(newProject => res.status(201).json(newProject))
     .catch(err => res.status(500).json({ error: 'Failed to add project' }));
 });
+
+// POST: new task to project
+router.post('/:id/tasks', (req, res) => {
+  Projects.addTask(req.params.id, req.body)
+  .then(count => res.status(201).json(count))
+  .catch(err => res.status(500).json({ error: 'Failed to add new task to project' }))
+})
 
 router.put('/:id', (req, res) => {
   const changes = req.body;
