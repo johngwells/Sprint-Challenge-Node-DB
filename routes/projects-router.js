@@ -1,13 +1,17 @@
 const express = require('express');
-const knex = require('../data/db-config');
-
 const router = express.Router();
 
+// const knex = require('../data/db-config');
+const Projects = require('../models/projects-models');
+
 router.get('/', (req, res) => {
-  knex
-    .select('*')
-    .from('projects')
-    .then(project => res.status(200).json(project))
+  Projects.get()
+    .then(projects => {
+      let projectList = projects.map(project => {
+        return { ...project, completed: project.completed === 0 ? false : true }
+      })
+      res.json(projectList);
+    })
     .catch(err => res.status(500).json({
       error: 'Failed to retrieve projects' 
     }));
