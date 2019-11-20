@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   Projects.get(req.params.id)
   .then(project => res.json({ ...project, completed: project.completed === 0 ? false : true }))
-  .catch(err = res.status(500).json({ error: 'Failed to retrieve project' }))
+  .catch(err => res.status(500).json({ error: 'Failed to retrieve project' }))
 })
 
 // GET: All tasks for project
